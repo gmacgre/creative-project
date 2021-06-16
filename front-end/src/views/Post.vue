@@ -1,14 +1,22 @@
 <template>
   <div>
+    <div class="spacer"></div>
     <h1>{{ post.title }}</h1>
-    <h2>{{ post.user.firstName }} {{ post.user.lastName }}</h2>
-    <div class='desc'>
-    <p class="descinner">{{ post.description }}</p>
+    <p class="author">
+      <em>{{ post.user.firstName }} {{ post.user.lastName }}</em>
+    </p>
+    <div class="desc">
+      <p class="descinner">{{ post.description }}</p>
     </div>
     <p>{{ upvoteCount }} upvotes, {{ downvoteCount }} downvotes</p>
     <p class="postDate">
       <em>{{ formatDate(post.created) }}</em>
     </p>
+    <button class="votebutton" type="button" @click="upvote()">Upvote</button>
+    <button class="votebutton" type="button" @click="downvote()">
+      Downvote
+    </button>
+    <button v-if="owner" type="submit" @click="deletePost()">Delete</button>
   </div>
 </template>
 
@@ -32,6 +40,7 @@ export default {
       post: "",
       comments: [],
       commentbox: "",
+      owner: true,
     };
   },
   methods: {
@@ -39,10 +48,94 @@ export default {
       try {
         this.response = await axios.get("/api/posts/" + this.$route.params.id);
         this.post = this.response.data;
+        if (this.post.user != this.$root.$data.user) {
+          this.owner = false;
+        }
       } catch (error) {
         this.error = error.response.data.message;
       }
-    } /*
+    },
+    formatDate(date) {
+      if (moment(date).diff(Date.now(), "days") < 15)
+        return moment(date).fromNow();
+      else return moment(date).format("d MMMM YYYY");
+    },
+    async upvote() {
+      try {
+        if (this.post.upvotes.includes(this.$root.$data.user)) {
+          return;
+        }
+        this.post.upvotes.push(this.$root.$data.user);
+        this.post.downvotes.filter(
+          (upvoter) => upvoter != this.$root.$data.user
+        );
+        await axios.put("/api/posts/" + this.$route.params.id, {
+          newEdit: this.post,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async downvote() {
+      try {
+        if (this.post.downvotes.includes(this.$root.$data.user)) {
+          return;
+        }
+        this.post.downvotes.push(this.$root.$data.user);
+        this.post.upvotes.filter((upvoter) => upvoter != this.$root.$data.user);
+        await axios.put("/api/posts/" + this.$route.params.id, {
+          newEdit: this.post,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async deletePost() {
+      try{
+        await axios.delete('api/posts/' + this.$route.params.id);
+      }
+      catch (error) {
+        console.log(error);
+      }
+    }
+  },
+  computed: {
+    upvoteCount() {
+      return this.post.upvotes.length;
+    },
+    downvoteCount() {
+      return this.post.downvotes.length;
+    },
+  },
+};
+</script>
+
+<style scoped>
+p {
+  padding: 0;
+  margin: 0;
+}
+.desc {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+.descinner {
+  width: 90%;
+  max-width: 600px;
+}
+.spacer {
+  margin-top: 10px;
+}
+.author {
+  padding: 0;
+  margin: 0;
+  font-size: 12px;
+}
+</style>
+
+<!--
+ /*
     async getComments() {
       try {
         this.response = await axios.get(
@@ -63,31 +156,4 @@ export default {
       } catch (error) {
         console.log(error);
       }
-    },*/,
-    formatDate(date) {
-      if (moment(date).diff(Date.now(), "days") < 15)
-        return moment(date).fromNow();
-      else return moment(date).format("d MMMM YYYY");
-    },
-  },
-  computed: {
-    upvoteCount() {
-      return this.post.upvotes.length;
-    },
-    downvoteCount() {
-      return this.post.downvotes.length;
-    },
-  },
-};
-</script>
-
-<style scoped>
-.desc {
-  display: flex;
-  justify-content: center;
-}
-.descinner {
-  width: 90%;
-  max-width: 600px;
-}
-</style>
+    },*/ -->

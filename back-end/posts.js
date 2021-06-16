@@ -44,13 +44,12 @@ router.post('/', validUser, async (req, res) => {
 //edit a post
 router.put('/:id', validUser, async (req, res) => {
     try {
-        let postEdit = Post.findOne({ _id: req.params.id }).populate('user');
-        if (postEdit.user != req.user) {
-            return res.sendStatus(403);
-        }
-        postEdit.title = req.body.title;
-        postEdit.description = req.body.description;
-        postEdit.save();
+        let post = await Post.findOne({ _id: req.params.id }).populate('user');
+        post.title = req.body.newEdit.title;
+        post.description = req.body.newEdit.description;
+        post.upvotes = req.body.newEdit.upvotes;
+        post.downvotes = req.body.newEdit.downvotes;
+        await post.save();
     }
     catch (error) {
         console.log(error);
