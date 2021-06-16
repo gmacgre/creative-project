@@ -17,6 +17,7 @@
       Downvote
     </button>
     <button v-if="owner" type="submit" @click="deletePost()">Delete</button>
+    <h2>Comments</h2>
   </div>
 </template>
 
@@ -40,7 +41,8 @@ export default {
       post: "",
       comments: [],
       commentbox: "",
-      owner: true,
+      owner: false,
+      failed: false
     };
   },
   methods: {
@@ -48,8 +50,11 @@ export default {
       try {
         this.response = await axios.get("/api/posts/" + this.$route.params.id);
         this.post = this.response.data;
-        if (this.post.user != this.$root.$data.user) {
-          this.owner = false;
+        if(this.post == ''){
+          this.failed = true;
+        }
+        if (this.post.user.username == this.$root.$data.user.username) {
+          this.owner = true;
         }
       } catch (error) {
         this.error = error.response.data.message;
@@ -67,7 +72,7 @@ export default {
         }
         this.post.upvotes.push(this.$root.$data.user);
         this.post.downvotes.filter(
-          (upvoter) => upvoter != this.$root.$data.user
+          (upvoter) => upvoter.username != this.$root.$data.user.username
         );
         await axios.put("/api/posts/" + this.$route.params.id, {
           newEdit: this.post,
@@ -78,11 +83,11 @@ export default {
     },
     async downvote() {
       try {
-        if (this.post.downvotes.includes(this.$root.$data.user)) {
+        if (this.post.downvotes.includes({user: this.$root.$data.user})) {
           return;
         }
         this.post.downvotes.push(this.$root.$data.user);
-        this.post.upvotes.filter((upvoter) => upvoter != this.$root.$data.user);
+        this.post.upvotes.filter((upvoter) => upvoter.username != this.$root.$data.user.username);
         await axios.put("/api/posts/" + this.$route.params.id, {
           newEdit: this.post,
         });
@@ -93,6 +98,7 @@ export default {
     async deletePost() {
       try{
         await axios.delete('api/posts/' + this.$route.params.id);
+        this.$router.go(-1);
       }
       catch (error) {
         console.log(error);
