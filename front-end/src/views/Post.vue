@@ -18,18 +18,19 @@
     </button>
     <button v-if="owner" type="submit" @click="deletePost()">Delete</button>
 
+    <!-- This is for editing posts that are yours.-->
     <div v-if="owner">
       <div class="spacer"></div>
       <p>Edit your post:</p>
       <div class="postSection">
         <div>
-          <input class="titleinput" v-model="post.title" />{{ post.Title }}
+          <input class="titleinput" v-model="newTitle" />{{ post.Title }}
         </div>
         <div>
           <p>New Description:</p>
-          <textarea class="descinput" v-model="post.description"></textarea>
+          <textarea class="descinput" v-model="newDesc"></textarea>
         </div>
-        <button class="topost" type="submit" @click="post()">Edit</button>
+        <button class="topost" type="submit" @click="edit()">Edit</button>
       </div>
     </div>
 
@@ -58,7 +59,8 @@ export default {
       comments: [],
       commentbox: "",
       owner: false,
-      failed: false,
+      newTitle: "",
+      newDesc: "",
     };
   },
   methods: {
@@ -66,9 +68,8 @@ export default {
       try {
         this.response = await axios.get("/api/posts/" + this.$route.params.id);
         this.post = this.response.data;
-        if (this.post == "") {
-          this.failed = true;
-        }
+        this.newTitle = this.post.title;
+        this.newDesc = this.post.description;
         if (this.post.user.username == this.$root.$data.user.username) {
           this.owner = true;
         }
@@ -137,6 +138,17 @@ export default {
         console.log(error);
       }
     },
+    async edit() {
+      try {
+        this.post.description = this.newDesc;
+        this.post.title = this.newTitle;
+        await axios.put("/api/posts/" + this.$route.params.id, {
+          newEdit: this.post,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
   computed: {
     upvoteCount() {
@@ -170,6 +182,11 @@ p {
   padding: 0;
   margin: 0;
   font-size: 12px;
+}
+.descinput {
+  width: 80%;
+  max-width: 600px;
+  height: 64px;
 }
 </style>
 
