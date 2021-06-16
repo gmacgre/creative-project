@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1 class='topmessage'>Welcome to the premier Computer Science BYU chatroom. Meet other CS students and talk about anything!</h1>
     <post-gallery :posts="postsOrganized" />
   </div>
 </template>

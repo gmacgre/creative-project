@@ -10,7 +10,7 @@
         <div class="postInfo">
           <div class="leftside">
             <p class="desc">{{ post.description }}</p>
-            <p class="upvotes">{{ post.upvotes.length }} upvote(s)</p>
+            <p class="upvotes">Score: {{ post.upvotes.length - post.downvotes.length }}, {{ post.upvotes.length + post.downvotes.length }} vote(s)</p>
           </div>
           <div class="rightside">
             <div>
@@ -44,6 +44,9 @@ export default {
         return moment(date).fromNow();
       else return moment(date).format("d MMMM YYYY");
     },
+    getScore(a, b){
+      return a - b;
+    }
   },
 };
 </script>
