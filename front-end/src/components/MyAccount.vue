@@ -20,15 +20,15 @@
         <button class="topost" type="submit" @click="post()">Post!</button>
       </div>
     </div>
+    <a class="logout" @click="logout">
+      <div>
+        <strong><em>Logout </em></strong>
+        <img class="logoutbutton" src="@/assets/logout.png" />
+      </div>
+    </a>
     <div class="posts">
       <h2>My Posts (Most Recent First)</h2>
       <post-gallery :posts="myPosts" />
-      <a class="logout" @click="logout">
-        <div>
-          <strong><em>Logout </em></strong>
-          <img class="logoutbutton" src="@/assets/logout.png" />
-        </div>
-      </a>
     </div>
   </div>
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <div class="upperpad">
     <div v-for="post in posts" v-bind:key="post._id">
       <router-link
         class="titlelink"
@@ -8,22 +8,26 @@
       >
       <div class="postOuter">
         <div class="postInfo">
-          <p class="desc">{{ post.description }}</p>
-          <p>{{ post.upvotes.length }} upvote(s)</p>
-          <div>
-            <p class="postAuthor">
-              <strong
-                >{{ post.user.firstName }} {{ post.user.lastName }}</strong
-              >
-            </p>
-            <p class="postDate">
-              <em>{{ formatDate(post.created) }}</em>
-            </p>
+          <div class="leftside">
+            <p class="desc">{{ post.description }}</p>
+            <p class="upvotes">{{ post.upvotes.length }} upvote(s)</p>
+          </div>
+          <div class="rightside">
+            <div>
+              <p class="postAuthor">
+                <strong
+                  >{{ post.user.firstName }} {{ post.user.lastName }}</strong
+                >
+              </p>
+              <p class="postDate">
+                <em>{{ formatDate(post.created) }}</em>
+              </p>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
 </template>
 
 <script>
@@ -46,8 +50,11 @@ export default {
 
 <style scoped>
 .titlelink {
-  color: black;
-  font-size: 24px;
+  color: #2c3e50;
+  font-size: 22px;
+  width: 90%;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 .postOuter {
   display: flex;
@@ -63,10 +70,25 @@ export default {
   font-size: 12px;
 }
 .desc {
-  align-self: center;
+  text-align: left;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 60%;
+  max-width: 100%;
+}
+.leftside {
+  width: 80%;
+}
+.upvotes {
+  display: flex;
+  justify-self: left;
+}
+.rightside {
+  width: 20%;
+  display: flex;
+  align-self: right;
+}
+.upperpad {
+  padding-top: 10px;
 }
 </style>
