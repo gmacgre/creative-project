@@ -1,6 +1,8 @@
 <template>
   <div>
-    <h1 class='topmessage'>Welcome to the premier Computer Science BYU chatroom. Meet other CS students and talk about anything!</h1>
+    <div class='messageout'>
+    <h2 class='topmessage'>Welcome to the premier Computer Science BYU chatroom. Meet other CS students and talk about anything!</h2>
+    </div>
     <post-gallery :posts="postsOrganized" />
   </div>
 </template>
@@ -53,3 +55,12 @@ export default {
   },
 };
 </script>
+<style scoped>
+.messageout {
+  display: flex;
+  justify-content: center;
+}
+.topmessage {
+  width: 75%;
+}
+</style>
