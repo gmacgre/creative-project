@@ -10,7 +10,9 @@
       </div>
     </div>
     <router-view />
-    <a href='' target='_blank'><h2>Link to Github Repository</h2></a>
+    <div class='footer'>
+    <a class='github' href='https://github.com/gmacgre/creative-project' target='_blank'><h2 class='githubinner'>Link to Github Repository</h2></a>
+    </div>
   </div>
 </template>
 
@@ -64,5 +66,25 @@ h1 {
 
 #nav a.router-link-exact-active {
   color: #03515c;
+}
+
+.footer {
+  padding: 25px;
+  margin-top: 10px;
+  background-color: cornflowerblue;
+  display: flex;
+  justify-content: center;
+}
+
+.github {
+  color: white;
+  text-decoration: none;
+}
+
+.githubinner {
+  background-color: #2c3e50;
+  border-radius: 25px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 </style>

@@ -1,30 +1,29 @@
 <template>
-  <div>
-    <section>
-      <div v-for="post in posts" v-bind:key="post._id">
-        <router-link
-          class="titlelink"
-          :to="{ name: 'Post', params: { id: post._id } }"
-          ><strong>{{ post.title }}</strong></router-link
-        >
-        <div class="postOuter">
-          <div class="postInfo">
-            <p class="desc">{{ post.description }}</p>
-            <div>
-              <p class="postAuthor">
-                <strong
-                  >{{ post.user.firstName }} {{ post.user.lastName }}</strong
-                >
-              </p>
-              <p class="postDate">
-                <em>{{ formatDate(post.created) }}</em>
-              </p>
-            </div>
+  <section>
+    <div v-for="post in posts" v-bind:key="post._id">
+      <router-link
+        class="titlelink"
+        :to="{ name: 'Post', params: { id: post._id } }"
+        ><strong>{{ post.title }}</strong></router-link
+      >
+      <div class="postOuter">
+        <div class="postInfo">
+          <p class="desc">{{ post.description }}</p>
+          <p>{{ post.upvotes.length }} upvote(s)</p>
+          <div>
+            <p class="postAuthor">
+              <strong
+                >{{ post.user.firstName }} {{ post.user.lastName }}</strong
+              >
+            </p>
+            <p class="postDate">
+              <em>{{ formatDate(post.created) }}</em>
+            </p>
           </div>
         </div>
       </div>
-    </section>
-  </div>
+    </div>
+  </section>
 </template>
 
 <script>
@@ -58,11 +57,13 @@ export default {
   display: flex;
   justify-content: space-between;
   width: 80%;
+  max-width: 600px;
 }
 .postDate {
   font-size: 12px;
 }
 .desc {
+  align-self: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

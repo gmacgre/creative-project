@@ -1,10 +1,15 @@
 <template>
-<div>
-    <h1>{{post.title}}</h1>
-    <h2>{{post.user.firstName}} {{post.user.lastName}}</h2>
-    <h3>{{post.description}}</h3>
-    <p>{{upvoteCount}} upvotes, {{downvoteCount}} downvotes</p>
-</div>
+  <div>
+    <h1>{{ post.title }}</h1>
+    <h2>{{ post.user.firstName }} {{ post.user.lastName }}</h2>
+    <div class='desc'>
+    <p class="descinner">{{ post.description }}</p>
+    </div>
+    <p>{{ upvoteCount }} upvotes, {{ downvoteCount }} downvotes</p>
+    <p class="postDate">
+      <em>{{ formatDate(post.created) }}</em>
+    </p>
+  </div>
 </template>
 
 <script>
@@ -37,7 +42,7 @@ export default {
       } catch (error) {
         this.error = error.response.data.message;
       }
-    },/*
+    } /*
     async getComments() {
       try {
         this.response = await axios.get(
@@ -58,7 +63,7 @@ export default {
       } catch (error) {
         console.log(error);
       }
-    },*/
+    },*/,
     formatDate(date) {
       if (moment(date).diff(Date.now(), "days") < 15)
         return moment(date).fromNow();
@@ -66,12 +71,23 @@ export default {
     },
   },
   computed: {
-      upvoteCount(){
-          return this.post.upvotes.length;
-      },
-      downvoteCount(){
-          return this.post.downvotes.length;
-      },
-  }
+    upvoteCount() {
+      return this.post.upvotes.length;
+    },
+    downvoteCount() {
+      return this.post.downvotes.length;
+    },
+  },
 };
 </script>
+
+<style scoped>
+.desc {
+  display: flex;
+  justify-content: center;
+}
+.descinner {
+  width: 90%;
+  max-width: 600px;
+}
+</style>
