@@ -37,7 +37,7 @@ router.post('/', validUser, async (req, res) => {
     }
     catch (error) {
         console.log(error);
-        return rers.sendStatus(500);
+        return res.sendStatus(500);
     }
 });
 
