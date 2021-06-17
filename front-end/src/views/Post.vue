@@ -30,11 +30,14 @@
           <p>New Description:</p>
           <textarea class="descinput" v-model="newDesc"></textarea>
         </div>
-        <button class="topost" type="submit" @click="edit()">Edit</button>
+        <button class="topost" type="submit" @click="editPost()">Edit</button>
       </div>
     </div>
 
     <h2>Comments</h2>
+    <p>Add a comment...</p>
+    <textarea class="commentbox" v-model="newCom"></textarea>
+    <button class="topost" type="submit" @click="comment()">Comment</button>
   </div>
 </template>
 
@@ -61,6 +64,7 @@ export default {
       owner: false,
       newTitle: "",
       newDesc: "",
+      newCom: '',
     };
   },
   methods: {
@@ -138,7 +142,7 @@ export default {
         console.log(error);
       }
     },
-    async edit() {
+    async editPost() {
       try {
         this.post.description = this.newDesc;
         this.post.title = this.newTitle;
