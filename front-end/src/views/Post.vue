@@ -36,10 +36,21 @@
 
     <h2>Comments</h2>
     <p>Add a comment...</p>
+    <div>
     <textarea class="commentbox" v-model="commentbox"></textarea>
+    </div>
     <button class="topost" type="submit" @click="comment()">Comment</button>
-    <div v-for="comment in comments" v-bind:key="comment._id">
-      <p>{{comment.user.username}} says: {{comment.comment}}</p>
+    <div class='spacer'></div>
+    <div class='finalcontain'>
+    <div class='commentcontainer'>
+    <div class='cominner' v-for="comment in comments" v-bind:key="comment._id">
+      <div class='topin'>
+      <h4 class='usernamecom'>{{comment.user.firstName}} {{comment.user.lastName}}</h4>
+      <p class='comtime'><em>{{ formatDate(post.created) }}.</em></p>
+      </div>
+      <p>{{comment.comment}}</p>
+    </div>
+    </div>
     </div>
   </div>
 </template>
@@ -213,5 +224,46 @@ p {
   width: 80%;
   max-width: 600px;
   height: 64px;
+}
+.usernamecom {
+  display: flex;
+  justify-self: left;
+  padding-right: 20px;
+  padding-left: 20px;
+  margin: 0;
+  color: black;
+}
+.commentbox {
+  width: 80%;
+  max-width: 600px;
+  height: 64px;
+}
+.finalcontain {
+  display: flex;
+  justify-content: center;
+}
+.commentcontainer {
+  width: 80%;
+  display: flex;
+  flex-wrap:wrap;
+  justify-content: center;
+  max-width:600px;
+}
+.cominner {
+  width: 100%;
+  margin-bottom: 20px;
+}
+.comtime {
+  padding-left: 20px;
+}
+.topin {
+  display: flex;
+  justify-content: space-between;
+  width:100%;
+  align-items: center;
+  background-color: cornflowerblue;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-radius: 25px;
 }
 </style>
