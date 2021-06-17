@@ -28,11 +28,11 @@ const commentSchema = new mongoose.Schema({
 const Comment = mongoose.model('Comment', commentSchema);
 
 //make a new comment
-router.post('/', validUser, async (req, res) => {
+router.post('/:postid', validUser, async (req, res) => {
     const newcomment = new Comment({
-        post: req.post,
+        post: req.body.post,
         user: req.user,
-        comment: req.body.description,
+        comment: req.body.comment,
         upvotes: req.user,
         downvotes: [],
     });

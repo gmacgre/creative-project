@@ -36,8 +36,11 @@
 
     <h2>Comments</h2>
     <p>Add a comment...</p>
-    <textarea class="commentbox" v-model="newCom"></textarea>
+    <textarea class="commentbox" v-model="commentbox"></textarea>
     <button class="topost" type="submit" @click="comment()">Comment</button>
+    <div v-for="comment in comments" v-bind:key="comment._id">
+      <p>{{comment.user.username}} says: {{comment.comment}}</p>
+    </div>
   </div>
 </template>
 
@@ -51,7 +54,7 @@ export default {
       let response = await axios.get("/api/users");
       this.$root.$data.user = response.data.user;
       this.getPost();
-      //this.getComments();
+      this.getComments();
     } catch (error) {
       this.$root.$data.user = null;
     }
@@ -64,7 +67,6 @@ export default {
       owner: false,
       newTitle: "",
       newDesc: "",
-      newCom: '',
     };
   },
   methods: {
@@ -79,6 +81,26 @@ export default {
         }
       } catch (error) {
         this.error = error.response.data.message;
+      }
+    },
+    async getComments(){
+      try {
+        this.response = await axios.get("/api/comments/" + this.$route.params.id);
+        this.comments = this.response.data;
+      } catch (error) {
+        this.error = error.response.data.message;
+      }
+    },
+    async comment() {
+      try {
+        await axios.post("/api/comments/" + this.$route.params.id, {
+          comment: this.commentbox,
+          post: this.post
+        });
+        this.commentbox = "";
+        this.getComments();
+      } catch (error) {
+        console.log(error);
       }
     },
     formatDate(date) {
@@ -193,27 +215,3 @@ p {
   height: 64px;
 }
 </style>
-
-<!--
- /*
-    async getComments() {
-      try {
-        this.response = await axios.get(
-          "/api/comments/" + this.$route.params.id
-        );
-        this.comments = this.response.data;
-      } catch (error) {
-        this.error = error.respose.data.message;
-      }
-    },
-    async submit() {
-      try {
-        await axios.post("/api/comments/" + this.$route.params.id, {
-          comment: this.commentbox,
-        });
-        this.commentbox = "";
-        this.getComments();
-      } catch (error) {
-        console.log(error);
-      }
-    },*/ -->
